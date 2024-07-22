@@ -35,7 +35,6 @@ public class SpawnerBreak implements Listener {
             OfflinePlayer spawnerOwner = SpawnerLimiter.getPlugin().getServer().getOfflinePlayer(spawnerOwnerUuid);
 
             if (ConfigManager.getConfig().contains("players." + uuidString)) {
-                event.getPlayer().sendMessage("You can't break spawners you placed.");
                 PlayerSpawnerManager.removeSpawner(spawnerOwnerUuid);
                 Logger.info(event.getPlayer().getName() + " broke a spawner. spawner owner was:" + spawnerOwner.getName() + " now . Total: " + PlayerSpawnerManager.getSpawnerCount(spawnerOwnerUuid), true);
             }
