@@ -1,0 +1,10 @@
+# config file for spawner limiter plugin
+
+# default max spawner count for players
+# by default, any player can have 3 spawners at max
+# default: 3
+max-default-spawner: 3
+
+
+# set to true to enable debug logging
+debug: true

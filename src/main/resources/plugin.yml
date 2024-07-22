@@ -1,0 +1,12 @@
+name: spawnerlimiter
+version: '${project.version}'
+main: me.duckblade.spawnerlimiter.SpawnerLimiter
+api-version: '1.19'
+prefix: spawnerlimiter
+commands:
+  spawnerlimiter:
+    description: Main command for SpawnerLimiter
+    usage: /spawnerlimiter info/set <player> <max-spawner-count>
+    aliases: [ SL, spawnerl ]
+    permission: spawnerlimiter.command
+    permission-message: You don't have permission to use this command.
