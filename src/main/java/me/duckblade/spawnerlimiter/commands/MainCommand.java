@@ -14,25 +14,24 @@ import org.jetbrains.annotations.NotNull;
 public class MainCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-//        if (!(args[0].equalsIgnoreCase("info")) || !(args[0].equalsIgnoreCase("set"))) return false;
-        if (args.length == 0) return false;
-        // arg 0 info
-        if (args[0].equalsIgnoreCase("info") && sender instanceof Player player) {
-            info(sender, player);
-            return true;
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
+            if (sender instanceof Player player) {
+                return info(sender, player);
+            }
+            return false;
         }
 
-        if (args[0].equalsIgnoreCase("info") && args.length == 2) {
+        if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
             Player target = Bukkit.getPlayer(args[1]);
-            if (target != null) {
-                info(sender, target);
+            if (target == null) {
+                sender.sendMessage(mini("<red>Player not found.</red>"));
                 return true;
             }
-            sender.sendMessage(mini("<red>Player not found.</red>"));
-            return true;
+            return info(sender, target);
         }
-        // arg 0 set
-        if (args[0].equalsIgnoreCase("set") && args.length == 3) {
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("set")) {
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null){
                 sender.sendMessage(mini("<red>Player not found.</red>"));
@@ -46,7 +45,6 @@ public class MainCommand implements CommandExecutor {
 
             setSpawner(maxSpawnerCount, sender, target);
             return true;
-
         }
         return false;
     }
@@ -70,15 +68,15 @@ public class MainCommand implements CommandExecutor {
 
 
 
-    private void info(CommandSender sender, Player target) {
-        String message = "--------------------\n" +
-                "Spawner Limiter\n" +
-                "name: " + target.getName() + " \n" +
-                "used spawner: " + PlayerSpawnerManager.getSpawnerCount(target.getUniqueId()) + "\n" +
-                "max spawner : " + PlayerSpawnerManager.getMaxSpawner(target) + "\n" +
-                "--------------------";
-        sender.sendMessage(mini(message));
-
+    private boolean info(CommandSender sender, Player target) {
+            String message = "--------------------\n" +
+                    "Spawner Limiter\n" +
+                    "name: " + target.getName() + " \n" +
+                    "used spawner: " + PlayerSpawnerManager.getSpawnerCount(target.getUniqueId()) + "\n" +
+                    "max spawner : " + PlayerSpawnerManager.getMaxSpawner(target) + "\n" +
+                    "--------------------";
+            sender.sendMessage(mini(message));
+            return true;
     }
 
     private Component mini(String message) {
