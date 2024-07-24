@@ -2,7 +2,6 @@ package me.duckblade.spawnerlimiter.manager;
 
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import me.duckblade.spawnerlimiter.commands.MainCommand;
-import me.duckblade.spawnerlimiter.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;

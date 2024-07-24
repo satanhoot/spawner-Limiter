@@ -1,6 +1,5 @@
 package me.duckblade.spawnerlimiter.commands;
 
-import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import me.duckblade.spawnerlimiter.manager.ConfigManager;
 import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
 import net.kyori.adventure.text.Component;
