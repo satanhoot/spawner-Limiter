@@ -23,9 +23,8 @@ public class SpawnerBreak implements Listener {
 
     @EventHandler
     public void onBreakSpawner(BlockBreakEvent event) {
-        if (event.getBlock().getType() != Material.SPAWNER) {
-            return;
-        }
+        if (event.getBlock().getType() != Material.SPAWNER) return;
+
         CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
         PersistentDataContainer container = spawner.getPersistentDataContainer();
 
@@ -49,7 +48,7 @@ public class SpawnerBreak implements Listener {
                     event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), spawnerForDrop);
 
                 }
-            }.runTaskLater(SpawnerLimiter.getPlugin(), 10L);
+            }.runTaskLater(SpawnerLimiter.getPlugin(), 5L);
 
         }
 

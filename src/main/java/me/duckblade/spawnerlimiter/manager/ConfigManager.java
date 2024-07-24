@@ -11,9 +11,9 @@ public class ConfigManager {
 
     private static File file;
     private static YamlConfiguration config;
-    private static SpawnerLimiter plugin = SpawnerLimiter.getPlugin();
+    private SpawnerLimiter plugin;
 
-    public static void setup() {
+    public static void setup(SpawnerLimiter plugin) {
         file = new File(plugin.getDataFolder(), "saves.yml");
 
         if (!file.exists()) {
@@ -25,21 +25,17 @@ public class ConfigManager {
 
     }
 
-    public static void reloadConfig() {
-        config = YamlConfiguration.loadConfiguration(file);
-    }
+    public static void reloadConfig() { config = YamlConfiguration.loadConfiguration(file); }
 
-    public static YamlConfiguration getConfig() {
-        return config;
-    }
+    public static YamlConfiguration getConfig() { return config; }
 
     public static void saveConfig() {
         try {
             config.save(file);
             Logger.info("file saved", true);
         } catch (IOException e) {
-            Logger.warning(e.getMessage());
-            Logger.warning("file not saved");
+            Logger.warning(e.getMessage(), false);
+            Logger.warning("file not saved", false);
         }
     }
 

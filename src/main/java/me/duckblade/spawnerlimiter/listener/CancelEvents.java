@@ -16,38 +16,31 @@ public class CancelEvents implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        EntityType entityType = event.getEntityType();
-        if (entityType == EntityType.PRIMED_TNT || entityType == EntityType.MINECART_TNT || entityType == EntityType.CREEPER || entityType == EntityType.ENDER_CRYSTAL
-                || entityType == EntityType.ENDER_DRAGON || entityType == EntityType.WITHER || entityType == EntityType.WITHER_SKULL) {
-            List<Block> blocks = event.blockList();
-            for (Block block : blocks) {
-                if (isSpawner(block)) {
-                    event.blockList().remove(block);
-                }
+        List<EntityType> entityTypeList = List.of(EntityType.PRIMED_TNT, EntityType.MINECART_TNT, EntityType.CREEPER, EntityType.ENDER_CRYSTAL, EntityType.ENDER_DRAGON, EntityType.WITHER, EntityType.WITHER_SKULL);
+        if (!(entityTypeList.contains(event.getEntityType()))) return;
+
+        List<Block> blocks = event.blockList();
+
+        for (Block block : blocks) {
+            if (isSpawner(block)) {
+                event.blockList().remove(block);
             }
         }
+
     }
 
     @EventHandler
     public void onBurnBlock(BlockBurnEvent event) {
-        if (isSpawner(event.getBlock())) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(isSpawner(event.getBlock()));
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.getEntityType() == EntityType.WITHER) {
-            if (event instanceof EntityDamageByEntityEvent) {
-                EntityDamageByEntityEvent damageevent = (EntityDamageByEntityEvent) event;
-                if (damageevent.getEntity() instanceof Block) {
-                    Block block = (Block) damageevent.getEntity();
-                    if (isSpawner(block)) {
-                        event.setCancelled(true);
-                    }
-                }
-            }
-        }
+        if (event.getEntityType() != EntityType.WITHER) return; // this event check Wither, if break spawner
+        if (!(event instanceof EntityDamageByEntityEvent damageEvent)) return;
+
+        if (!(damageEvent.getEntity() instanceof Block block)) return;
+        event.setCancelled(isSpawner(block));
     }
 
     private boolean isSpawner(Block block) {

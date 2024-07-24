@@ -1,6 +1,8 @@
 package me.duckblade.spawnerlimiter.manager;
 
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
+import me.duckblade.spawnerlimiter.utils.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -18,7 +20,7 @@ public class PlayerSpawnerManager {
 
         int count = getSpawnerCount(playerId);
         if (count == 0) {
-            OfflinePlayer player = SpawnerLimiter.getPlugin().getServer().getOfflinePlayer(playerId);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(playerId);
             ConfigManager.getConfig().set("players." + playerId + ".name", player.getName());
         }
         ConfigManager.getConfig().set("players." + playerId + ".used-spawner", count + 1);
@@ -40,13 +42,10 @@ public class PlayerSpawnerManager {
         return ConfigManager.getConfig().getInt("players." + playerId + ".used-spawner", 0);
     }
 
-    public static int getMaxSpawner(UUID playerId) {
+    public static int getMaxSpawner(Player player) {
         int defaultMaxSpawner = PlayerSpawnerManager.maxSpawner;
 
-        Player player = SpawnerLimiter.getPlugin().getServer().getPlayer(playerId);
-        if (player == null) return defaultMaxSpawner;
         Set<PermissionAttachmentInfo> perms = player.getEffectivePermissions();
-
         if (perms.isEmpty()) return defaultMaxSpawner;
 
         Set<String> permissionNumberStrings = new HashSet<>();
@@ -67,10 +66,10 @@ public class PlayerSpawnerManager {
         for (String perm : permissionNumberStrings) {
             try {
                 int value = Integer.parseInt(perm);
-                most = (byte) Math.max(most, value);
+                most = Math.max(most, value);
                 found = true;
             } catch (NumberFormatException e) {
-                
+                Logger.warning(e.getMessage(), true);
             }
 
         }

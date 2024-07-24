@@ -9,10 +9,6 @@ public class Logger {
 
     public static boolean enebledDebug;
 
-    public static void info(String message) {
-        info(message, false);
-    }
-
     public static void info(String message, boolean debug) {
         if (debug) {
             if (enebledDebug) {
@@ -21,10 +17,6 @@ public class Logger {
         } else {
             SpawnerLimiter.getPlugin().getLogger().log(Level.INFO, prefix + message);
         }
-    }
-
-    public static void warning(String message) {
-        warning(message, false);
     }
 
     public static void warning(String message, boolean debug) {
