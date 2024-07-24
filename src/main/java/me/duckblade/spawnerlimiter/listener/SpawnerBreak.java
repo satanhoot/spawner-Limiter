@@ -38,6 +38,7 @@ public class SpawnerBreak implements Listener {
                 Logger.info(event.getPlayer().getName() + " broke a spawner. spawner owner was:" + spawnerOwner.getName() + " now . Total: " + PlayerSpawnerManager.getSpawnerCount(spawnerOwnerUuid), true);
             }
         }
+
         Player player = event.getPlayer();
         ItemStack tool = player.getInventory().getItemInMainHand();
         if (tool.hasItemMeta() && tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) {

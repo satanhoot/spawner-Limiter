@@ -1,6 +1,7 @@
 package me.duckblade.spawnerlimiter.manager;
 
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
+import me.duckblade.spawnerlimiter.commands.MainCommand;
 import me.duckblade.spawnerlimiter.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -62,16 +63,13 @@ public class PlayerSpawnerManager {
 
         int most = 0;
         boolean found = false;
-
         for (String perm : permissionNumberStrings) {
-            try {
-                int value = Integer.parseInt(perm);
+
+            Integer value = MainCommand.parseInteger(perm);
+            if (value != null) {
                 most = Math.max(most, value);
                 found = true;
-            } catch (NumberFormatException e) {
-                Logger.warning(e.getMessage(), true);
             }
-
         }
 
         return (found ? most : defaultMaxSpawner);

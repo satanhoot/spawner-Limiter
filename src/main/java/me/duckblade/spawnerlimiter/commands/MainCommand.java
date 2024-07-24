@@ -86,7 +86,7 @@ public class MainCommand implements CommandExecutor {
         return MiniMessage.miniMessage().deserialize(message);
     }
 
-    private Integer parseInteger(String str) {
+    public static Integer parseInteger(String str) {
         try {
             return Integer.parseInt(str);
         } catch (NumberFormatException e) {
