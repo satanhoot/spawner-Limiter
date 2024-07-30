@@ -6,16 +6,18 @@ import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
 import me.duckblade.spawnerlimiter.utils.Logger;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -34,7 +36,7 @@ public class SpawnerBreak implements Listener {
             OfflinePlayer spawnerOwner = SpawnerLimiter.getPlugin().getServer().getOfflinePlayer(spawnerOwnerUuid);
 
             if (ConfigManager.getConfig().contains("players." + uuidString)) {
-                PlayerSpawnerManager.removeSpawner(spawnerOwnerUuid);
+                PlayerSpawnerManager.removeSpawner(spawnerOwnerUuid, event.getBlock().getLocation());
                 Logger.info(event.getPlayer().getName() + " broke a spawner. spawner owner was:" + spawnerOwner.getName() + " now . Total: " + PlayerSpawnerManager.getSpawnerCount(spawnerOwnerUuid), true);
             }
         }
@@ -42,16 +44,29 @@ public class SpawnerBreak implements Listener {
         Player player = event.getPlayer();
         ItemStack tool = player.getInventory().getItemInMainHand();
         if (tool.hasItemMeta() && tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    ItemStack spawnerForDrop = new ItemStack(Material.SPAWNER);
-                    event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), spawnerForDrop);
-
-                }
-            }.runTaskLater(SpawnerLimiter.getPlugin(), 5L);
+            Block block = event.getBlock();
+            player.getWorld().dropItemNaturally(block.getLocation(), getSpawnerItemStack(block));
 
         }
 
+    }
+
+
+    public ItemStack getSpawnerItemStack(Block block) {
+        if (block.getType() != Material.SPAWNER) return null;
+
+        CreatureSpawner blockState = (CreatureSpawner) block.getState();
+        if (blockState.getSpawnedType() == EntityType.PIG) return new ItemStack(Material.SPAWNER);
+
+        ItemStack spawner = new ItemStack(Material.SPAWNER);
+        BlockStateMeta spawnerMeta = (BlockStateMeta) spawner.getItemMeta();
+
+        CreatureSpawner spawnerState = (CreatureSpawner) spawnerMeta.getBlockState();
+        spawnerState.setSpawnedType(blockState.getSpawnedType());
+        spawnerState.update();
+        spawnerMeta.setBlockState(spawnerState);
+        spawner.setItemMeta(spawnerMeta);
+
+        return spawner;
     }
 }

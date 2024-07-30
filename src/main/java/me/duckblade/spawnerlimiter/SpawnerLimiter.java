@@ -1,13 +1,13 @@
 package me.duckblade.spawnerlimiter;
 
 import me.duckblade.spawnerlimiter.commands.MainCommand;
+import me.duckblade.spawnerlimiter.commands.MainTabcomlater;
 import me.duckblade.spawnerlimiter.listener.CancelEvents;
 import me.duckblade.spawnerlimiter.listener.SpawnerBreak;
 import me.duckblade.spawnerlimiter.listener.SpawnerPlace;
 import me.duckblade.spawnerlimiter.manager.ConfigManager;
 import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
 import me.duckblade.spawnerlimiter.utils.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +29,7 @@ public final class SpawnerLimiter extends JavaPlugin {
         listerners.forEach(listerner -> getServer().getPluginManager().registerEvents(listerner, this));
         // register commands
         getCommand("spawnerlimiter").setExecutor(new MainCommand());
-
+        getCommand("spawnerlimiter").setTabCompleter(new MainTabcomlater());
     }
 
 

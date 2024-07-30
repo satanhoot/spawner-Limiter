@@ -33,7 +33,7 @@ public class SpawnerPlace implements Listener {
             event.setCancelled(true);
             messageWithCooldown(player);
         } else {
-            PlayerSpawnerManager.addSpawner(player.getUniqueId());
+            PlayerSpawnerManager.addSpawner(player.getUniqueId(), event.getBlock().getLocation());
             Logger.info("Player " + player.getName() + " placed a spawner. Total: " + (currentCount + 1), true);
 
             CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();

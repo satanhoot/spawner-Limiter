@@ -5,6 +5,7 @@ import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import java.util.logging.Level;
 
 public class Logger {
+
     private static final String prefix = "[SpawnerLimiter] ";
 
     public static boolean enebledDebug;

@@ -7,6 +7,9 @@ commands:
   spawnerlimiter:
     description: Main command for SpawnerLimiter
     usage: /spawnerlimiter info/set <player> <max-spawner-count>
-    aliases: [SL, spawnerl]
+    aliases:
+      - sl
+      - slimit
     permission: spawnerlimiter.command
-    permission-message: You don't have permission to use this command.
+    permission-message: you dont have perm to use this command
+

@@ -2,13 +2,16 @@ package me.duckblade.spawnerlimiter.manager;
 
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import me.duckblade.spawnerlimiter.commands.MainCommand;
+import me.duckblade.spawnerlimiter.utils.LocationToString;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +19,7 @@ public class PlayerSpawnerManager {
     public static NamespacedKey placeBy = new NamespacedKey(SpawnerLimiter.getPlugin(), "player_uuid");
     public static int maxSpawner;
 
-    public static void addSpawner(UUID playerId) {
+    public static void addSpawner(UUID playerId, Location loc) {
 
         int count = getSpawnerCount(playerId);
         if (count == 0) {
@@ -24,13 +27,20 @@ public class PlayerSpawnerManager {
             ConfigManager.getConfig().set("players." + playerId + ".name", player.getName());
         }
         ConfigManager.getConfig().set("players." + playerId + ".used-spawner", count + 1);
+        String location = LocationToString.locationToString(loc);
+        List<String> spawnerList = ConfigManager.getConfig().getStringList("players." + playerId + ".spawner-locations");
+        spawnerList.add(location);
+        ConfigManager.getConfig().set("players." + playerId + ".spawner-locations", spawnerList);
         ConfigManager.saveConfig();
     }
 
-    public static void removeSpawner(UUID playerId) {
+    public static void removeSpawner(UUID playerId, Location loc) {
         int count = getSpawnerCount(playerId);
         if (count > 0) {
             ConfigManager.getConfig().set("players." + playerId + ".used-spawner", count - 1);
+            List<String> spawnerList = ConfigManager.getConfig().getStringList("players." + playerId + ".spawner-locations");
+            spawnerList.remove(LocationToString.locationToString(loc));
+            ConfigManager.getConfig().set("players." + playerId + ".spawner-locations", spawnerList);
             if (count - 1 == 0) {
                 ConfigManager.getConfig().set("players." + playerId, null);
             }
