@@ -3,6 +3,7 @@ package me.duckblade.spawnerlimiter.listener;
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import me.duckblade.spawnerlimiter.manager.ConfigManager;
 import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
+import me.duckblade.spawnerlimiter.manager.WorldManager;
 import me.duckblade.spawnerlimiter.utils.Logger;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -25,13 +26,14 @@ public class SpawnerBreak implements Listener {
 
     @EventHandler
     public void onBreakSpawner(BlockBreakEvent event) {
+        if (WorldManager.isWorldDisabled(event.getBlock().getWorld().getName())) return;
         if (event.getBlock().getType() != Material.SPAWNER) return;
 
         CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
         PersistentDataContainer container = spawner.getPersistentDataContainer();
 
-        if (container.has(PlayerSpawnerManager.placeBy, PersistentDataType.STRING)) {
-            String uuidString = container.get(PlayerSpawnerManager.placeBy, PersistentDataType.STRING);
+        if (container.has(PlayerSpawnerManager.PLACE_BY, PersistentDataType.STRING)) {
+            String uuidString = container.get(PlayerSpawnerManager.PLACE_BY, PersistentDataType.STRING);
             UUID spawnerOwnerUuid = UUID.fromString(uuidString);
             OfflinePlayer spawnerOwner = SpawnerLimiter.getPlugin().getServer().getOfflinePlayer(spawnerOwnerUuid);
 

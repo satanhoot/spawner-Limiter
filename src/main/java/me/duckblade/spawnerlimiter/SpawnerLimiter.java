@@ -7,6 +7,7 @@ import me.duckblade.spawnerlimiter.listener.SpawnerBreak;
 import me.duckblade.spawnerlimiter.listener.SpawnerPlace;
 import me.duckblade.spawnerlimiter.manager.ConfigManager;
 import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
+import me.duckblade.spawnerlimiter.manager.WorldManager;
 import me.duckblade.spawnerlimiter.utils.Logger;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,12 +34,14 @@ public final class SpawnerLimiter extends JavaPlugin {
     }
 
 
+
     public void saveConfig() {
         saveDefaultConfig();
         ConfigManager.setup(plugin);
         Logger.enebledDebug = getConfig().getBoolean("debug");
         Logger.warning("logger enabled!", true);
         PlayerSpawnerManager.maxSpawner = getConfig().getInt("max-default-spawner");
+        WorldManager.setup(getConfig());
     }
 }
 

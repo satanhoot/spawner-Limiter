@@ -3,6 +3,7 @@ package me.duckblade.spawnerlimiter.listener;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.duckblade.spawnerlimiter.manager.PlayerSpawnerManager;
+import me.duckblade.spawnerlimiter.manager.WorldManager;
 import me.duckblade.spawnerlimiter.utils.Logger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -23,6 +24,7 @@ public class SpawnerPlace implements Listener {
 
     @EventHandler
     public void onPlaceSpawner(BlockPlaceEvent event) {
+        if (WorldManager.isWorldDisabled(event.getBlock().getWorld().getName())) return;
         if (event.getBlock().getType() != Material.SPAWNER) return;
 
         Player player = event.getPlayer();
@@ -38,9 +40,9 @@ public class SpawnerPlace implements Listener {
 
             CreatureSpawner spawner = (CreatureSpawner) event.getBlock().getState();
             PersistentDataContainer container = spawner.getPersistentDataContainer();
-            container.set(PlayerSpawnerManager.placeBy, PersistentDataType.STRING, player.getUniqueId().toString());
+            container.set(PlayerSpawnerManager.PLACE_BY, PersistentDataType.STRING, player.getUniqueId().toString());
             spawner.update();
-            Logger.info("Player " + player.getName() + " placed a spawner. with key : " + container.getOrDefault(PlayerSpawnerManager.placeBy, PersistentDataType.STRING, "null") + "Total: " + (currentCount + 1), true);
+            Logger.info("Player " + player.getName() + " placed a spawner. with key : " + container.getOrDefault(PlayerSpawnerManager.PLACE_BY, PersistentDataType.STRING, "null") + "Total: " + (currentCount + 1), true);
 
         }
     }

@@ -8,3 +8,10 @@ max-default-spawner: 3
 
 # set to true to enable debug logging
 debug: true
+
+
+
+
+disabled-worlds:
+  - world_example1
+  - world_example2

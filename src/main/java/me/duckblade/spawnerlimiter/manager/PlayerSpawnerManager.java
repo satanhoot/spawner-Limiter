@@ -2,7 +2,7 @@ package me.duckblade.spawnerlimiter.manager;
 
 import me.duckblade.spawnerlimiter.SpawnerLimiter;
 import me.duckblade.spawnerlimiter.commands.MainCommand;
-import me.duckblade.spawnerlimiter.utils.LocationToString;
+import me.duckblade.spawnerlimiter.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class PlayerSpawnerManager {
-    public static NamespacedKey placeBy = new NamespacedKey(SpawnerLimiter.getPlugin(), "player_uuid");
+    public static final NamespacedKey PLACE_BY = new NamespacedKey(SpawnerLimiter.getPlugin(), "player_uuid");
     public static int maxSpawner;
 
     public static void addSpawner(UUID playerId, Location loc) {
@@ -27,7 +27,7 @@ public class PlayerSpawnerManager {
             ConfigManager.getConfig().set("players." + playerId + ".name", player.getName());
         }
         ConfigManager.getConfig().set("players." + playerId + ".used-spawner", count + 1);
-        String location = LocationToString.locationToString(loc);
+        String location = LocationUtils.locationToString(loc);
         List<String> spawnerList = ConfigManager.getConfig().getStringList("players." + playerId + ".spawner-locations");
         spawnerList.add(location);
         ConfigManager.getConfig().set("players." + playerId + ".spawner-locations", spawnerList);
@@ -39,7 +39,7 @@ public class PlayerSpawnerManager {
         if (count > 0) {
             ConfigManager.getConfig().set("players." + playerId + ".used-spawner", count - 1);
             List<String> spawnerList = ConfigManager.getConfig().getStringList("players." + playerId + ".spawner-locations");
-            spawnerList.remove(LocationToString.locationToString(loc));
+            spawnerList.remove(LocationUtils.locationToString(loc));
             ConfigManager.getConfig().set("players." + playerId + ".spawner-locations", spawnerList);
             if (count - 1 == 0) {
                 ConfigManager.getConfig().set("players." + playerId, null);

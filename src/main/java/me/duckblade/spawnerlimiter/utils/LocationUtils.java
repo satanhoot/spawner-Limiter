@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class LocationToString {
+public class LocationUtils {
 
     public static String locationToString(Location location) {
         String worldName = location.getWorld().getName();
