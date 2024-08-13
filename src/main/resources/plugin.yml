@@ -3,6 +3,8 @@ version: '${project.version}'
 main: me.duckblade.spawnerlimiter.SpawnerLimiter
 api-version: '1.19'
 prefix: spawnerlimiter
+
+softdepend: [PlaceholderAPI]
 commands:
   spawnerlimiter:
     description: Main command for SpawnerLimiter

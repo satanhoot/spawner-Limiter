@@ -2,6 +2,7 @@ package me.duckblade.spawnerlimiter;
 
 import me.duckblade.spawnerlimiter.commands.MainCommand;
 import me.duckblade.spawnerlimiter.commands.MainTabcomlater;
+import me.duckblade.spawnerlimiter.hook.PlaceHolderApiHook;
 import me.duckblade.spawnerlimiter.listener.CancelEvents;
 import me.duckblade.spawnerlimiter.listener.SpawnerBreak;
 import me.duckblade.spawnerlimiter.listener.SpawnerPlace;
@@ -31,6 +32,12 @@ public final class SpawnerLimiter extends JavaPlugin {
         // register commands
         getCommand("spawnerlimiter").setExecutor(new MainCommand());
         getCommand("spawnerlimiter").setTabCompleter(new MainTabcomlater());
+
+        // PlaceHolderApi register;
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            PlaceHolderApiHook.registerHook();
+        }
+
     }
 
 
