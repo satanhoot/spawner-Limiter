@@ -30,7 +30,9 @@
 You can set the global max spawner limit in the configuration file or assign specific limits to players using permission nodes like `spawner.max.{maxspawner}`. For example, `spawner.max.5` would allow a player to use up to 5 spawners.
 
 ## Installation
-1. Download the plugin jar file and place it in your server's `plugins` folder.
+1. Download the [plugin jar](https://github.com/satanhoot/spawner-Limiter/releases) file and place it in your server's `plugins` folder.
 2. Start the server to generate the configuration file.
 3. Edit the configuration file to set your desired max spawner limits.
 4. Restart the server for the changes to take effect.
+
+
